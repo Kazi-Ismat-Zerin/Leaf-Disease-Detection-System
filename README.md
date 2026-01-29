@@ -1,4 +1,4 @@
-# 🌿 Automated Plant Leaf Disease Detection System
+# 🌿 Leaf Disease Detection System
 
 An AI-powered application that detects plant leaf diseases from images using Deep Learning (CNN). The system provides real-time predictions through a FastAPI backend and a clean, user-friendly Streamlit interface—helping farmers and researchers make timely decisions.
 
