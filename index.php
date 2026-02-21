@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Leaf Doctor | Smart Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+    <style>
+        body { background-color: #f0f4f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background-color: #2e7d32 !important; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .main-card { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        .upload-area { border: 2px dashed #2e7d32; border-radius: 15px; padding: 40px; cursor: pointer; transition: 0.3s; background: #fafafa; }
+        .upload-area:hover { background: #e8f5e9; }
+        .btn-predict { background-color: #2e7d32; color: white; border-radius: 10px; padding: 12px 30px; font-weight: 600; border: none; }
+        .btn-predict:hover { background-color: #1b5e20; color: white; }
+        #preview { max-width: 100%; border-radius: 15px; margin-top: 20px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .result-box { display: none; margin-top: 25px; padding: 20px; border-radius: 15px; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-leaf me-2"></i> AI Leaf Doctor</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card main-card p-4 p-md-5 bg-white text-center">
+                    <h2 class="fw-bold mb-4" style="color: #2e7d32;">Scan Your Plant</h2>
+                    <p class="text-muted mb-4">Upload a clear photo of the leaf to detect diseases instantly using AI.</p>
+
+                    <div class="upload-area mb-4" onclick="document.getElementById('imageInput').click()">
+                        <i class="fas fa-cloud-upload-alt fa-3x mb-3" style="color: #2e7d32;"></i>
+                        <p class="mb-0">Click to upload or drag and drop</p>
+                        <input type="file" id="imageInput" accept="image/*" hidden onchange="showPreview(event)">
+                    </div>
+
+                    <img id="preview" src="#" alt="Preview">
+
+                    <button class="btn btn-predict mt-4 w-100" onclick="uploadImage()">
+                        <i class="fas fa-search me-2"></i> Analyze Leaf
+                    </button>
+
+                    <div id="resultSection" class="result-box">
+                        <h4 class="mb-2">Result: <span id="resClass" class="fw-bold text-success"></span></h4>
+                        <p class="mb-0 text-muted">Accuracy: <span id="resConf"></span></p>
+                        <hr>
+                        <div id="suggestionBox" class="small text-start p-3 bg-light border-start border-4 border-success">
+                            </div>
+                    </div>
+
+                    <div id="loader" class="mt-4" style="display: none;">
+                        <div class="spinner-border text-success" role="status"></div>
+                        <p class="mt-2 text-muted">AI is analyzing...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Preview function
+        function showPreview(event) {
+            const preview = document.getElementById('preview');
+            const file = event.target.files[0];
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+                document.getElementById('resultSection').style.display = 'none';
+            }
+        }
+
+        async function uploadImage() {
+            const fileInput = document.getElementById('imageInput');
+            const resultSection = document.getElementById('resultSection');
+            const loader = document.getElementById('loader');
+            
+            if (fileInput.files.length === 0) return alert("Please select an image first!");
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            // Show loader and hide results
+            loader.style.display = 'block';
+            resultSection.style.display = 'none';
+
+            try {
+                const response = await fetch('http://localhost:8000/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                // Fill data
+                document.getElementById('resClass').innerText = data.class;
+                document.getElementById('resConf').innerText = data.confidence + "%";
+                
+                // Add simple suggestions based on result
+                const suggBox = document.getElementById('suggestionBox');
+                if(data.class === "Healthy") {
+                    suggBox.innerHTML = "<strong>Suggestion:</strong> Your plant looks healthy. Continue regular watering and ensure proper sunlight.";
+                } else {
+                    suggBox.innerHTML = "<strong>Warning:</strong> Disease detected! Please check for moisture levels and use organic fungicides if necessary.";
+                }
+
+                resultSection.style.display = 'block';
+            } catch (error) {
+                alert("Error connecting to AI Server. Make sure FastAPI is running.");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
