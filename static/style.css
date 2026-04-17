@@ -1,0 +1,134 @@
+/* মেইন বডি সেটআপ */
+body { 
+    background-color: #f4fbf4; /* হালকা সবুজ আভা */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding-bottom: 50px;
+}
+
+/* নেভিগেশন বার */
+.navbar {
+    background-color: #2e7d32 !important; 
+    padding: 15px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+/* মেইন কার্ড ডিজাইন */
+.main-card { 
+    border: none; 
+    border-radius: 25px; 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08); 
+    background: white;
+    transition: transform 0.3s ease;
+}
+
+/* আপলোড অপশন বাটন (ক্যামেরা ও গ্যালারি) */
+.upload-options { 
+    display: flex; 
+    gap: 15px; 
+    justify-content: center; 
+    margin-top: 20px;
+}
+
+.opt-btn { 
+    flex: 1; 
+    padding: 20px 10px; 
+    border-radius: 15px; 
+    border: 2px dashed #2e7d32; 
+    background: #f9fff9; 
+    color: #2e7d32; 
+    font-weight: 600; 
+    transition: all 0.3s ease; 
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.opt-btn:hover { 
+    background: #e8f5e9; 
+    border-style: solid;
+    transform: translateY(-3px);
+}
+
+.opt-btn i { 
+    font-size: 28px; 
+    margin-bottom: 10px; 
+}
+
+/* ইমেজ প্রিভিউ */
+#preview { 
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 15px; 
+    margin: 20px 0; 
+    display: none; 
+    border: 3px solid #e8f5e9;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+}
+
+/* অ্যানালাইসিস বাটন */
+.btn-predict { 
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    color: white; 
+    border-radius: 12px; 
+    padding: 15px; 
+    font-size: 18px;
+    font-weight: 600; 
+    border: none; 
+    box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-predict:hover { 
+    background: linear-gradient(135deg, #2e7d32, #1b5e20);
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.4);
+}
+
+.btn-predict:disabled {
+    background: #a5d6a7;
+    cursor: not-allowed;
+}
+
+/* রেজাল্ট বক্স */
+.result-box { 
+    display: none; 
+    margin-top: 25px; 
+    padding: 20px; 
+    border-radius: 15px; 
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+.text-success { color: #2e7d32 !important; }
+.text-danger { color: #d32f2f !important; }
+
+/* সাজেশন বক্স */
+#suggestionBox {
+    background-color: #f1f8e9;
+    border-left: 5px solid #2e7d32;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* মোবাইল রেসপন্সিভনেস */
+@media (max-width: 576px) {
+    .main-card {
+        padding: 20px !important;
+    }
+    .opt-btn {
+        padding: 15px 5px;
+        font-size: 14px;
+    }
+}
