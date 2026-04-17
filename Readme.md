@@ -128,12 +128,5 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 
 ---
 
-## 👩‍💻 Author
-**Your Name**
-Kazi Ismat Zerin
-Souravi Sultana Sumi
-
----
-
 ## 📄 License
 This project is open-source and available under the MIT License.
